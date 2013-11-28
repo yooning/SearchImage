@@ -7,6 +7,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -29,6 +30,8 @@ public class CustomizedListView extends Activity {
     ListView list;
     LazyAdapter adapter;
     EditText editText;
+    
+    ArrayList<HashMap<String, String>> songsList;
  
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,8 +56,10 @@ public class CustomizedListView extends Activity {
     }
 
 	public void fillList() {
-		ArrayList<HashMap<String, String>> songsList = new ArrayList<HashMap<String, String>>();
- 
+		
+		 songsList = new ArrayList<HashMap<String, String>>();
+		
+		
         XMLParser parser = new XMLParser();
         
         String xml = parser.getXmlFromUrl(URL); // getting XML from URL
@@ -89,6 +94,12 @@ public class CustomizedListView extends Activity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                     int position, long id) {
+            	HashMap<String, String> map = songsList.get(position);
+            	              Intent intent = new Intent(getApplicationContext(), DetailView.class);
+            	              intent.putExtra(KEY_TITLE, map.get(KEY_TITLE));
+            	              intent.putExtra(KEY_THUMB_URL, map.get(KEY_THUMB_URL));
+            	              
+            	              startActivity(intent);
  
             }
         });
